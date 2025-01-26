@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun verificarUsuarioLogado() {
+
+//        autenticacao.signOut() // Deslogando o usuário
+
         val usuario = autenticacao.currentUser
         val id = usuario?.uid
 
@@ -58,10 +61,35 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnExecutar.setOnClickListener {
 
-            cadastroUsuario()
+//            cadastroUsuario()
+            logarUsuario()
 
         }
 
+    }
+
+    private fun logarUsuario() {
+
+        // Dados inseridos pelo usuário
+        val email = "que-mira-bobo@teste.com"
+        val senha = "?Argentina10"
+
+        // Simulando uma tela de login com email e senha
+        autenticacao.signInWithEmailAndPassword(email, senha)
+            .addOnSuccessListener { authResult ->
+
+                val id = authResult.user?.uid
+
+                binding.textResultado.text = "Sucesso ao logar usuário com id: $id"
+
+                startActivity(
+                    Intent(this, PrincipalActivity::class.java)
+                )
+
+            }.addOnFailureListener { exception ->
+                val mensagemErro = exception.message
+                binding.textResultado.text = "Erro: $mensagemErro"
+            }
     }
 
     private fun cadastroUsuario() {
