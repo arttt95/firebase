@@ -12,6 +12,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -24,10 +25,56 @@ class MainActivity : AppCompatActivity() {
         FirebaseAuth.getInstance()
     }
 
+    private val bancoDados by lazy {
+        FirebaseFirestore.getInstance()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        binding.btnExecutar.setOnClickListener {
+
+            salvarDados()
+
+//            cadastroUsuario()
+//            logarUsuario()
+
+        }
+
+    }
+
+    private fun salvarDados() {
+
+        val dados = mapOf(
+            "nome" to "Pessi",
+            "idade" to "36",
+            "cpf" to "425..."
+
+        )
+
+        bancoDados
+            .collection("usuarios")
+            .document("2")
+            .set(dados)
+            .addOnSuccessListener { // Void -> apenas para exibir mensagem
+                exibirMensagem("Usuário salvo com sucesso!")
+            }.addOnFailureListener { exception ->
+                exibirMensagem("Erro ao salvar usuário. Code: ${exception.message}")
+            }
+
+    }
+
     override fun onStart() {
         super.onStart()
 
-        verificarUsuarioLogado()
+//        verificarUsuarioLogado()
 
     }
 
@@ -45,25 +92,6 @@ class MainActivity : AppCompatActivity() {
             )
         } else {
             exibirMensagem("Não tem usuário logado")
-        }
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        binding.btnExecutar.setOnClickListener {
-
-//            cadastroUsuario()
-            logarUsuario()
-
         }
 
     }
