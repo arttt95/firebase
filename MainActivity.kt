@@ -38,12 +38,41 @@ class MainActivity : AppCompatActivity() {
         binding.btnExecutar.setOnClickListener {
 
 //            salvarDados()
-            atualizarRemoverDados()
+//            atualizarRemoverDados()
+
+//            listarDados()
 
 //            cadastroUsuario()
-//            logarUsuario()
+            logarUsuario()
 
         }
+
+    }
+
+    private fun salvarDadosUsuario(nome: String,idade: String) {
+
+        val idUsuarioLogado = autenticacao.currentUser?.uid
+
+        if(idUsuarioLogado != null) {
+
+            val dados = mapOf(
+                "nome" to nome,
+                "idade" to idade
+                // Poderia ser salvo vários outros dados em 'cadastroUsuario -> addOnSuccesListener'
+            )
+
+            bancoDados
+                .collection("usuarios")
+                .document(idUsuarioLogado)
+                .set(dados)
+
+        }
+
+    }
+
+    private fun listarDados() {
+
+        salvarDadosUsuario("Itachi Uchiha", "34")
 
     }
 
@@ -190,8 +219,10 @@ class MainActivity : AppCompatActivity() {
     private fun cadastroUsuario() {
 
         // Dados digitados pelo usuário
-        val email = "que-mira-bobo@teste.com"
-        val senha = "?Argentina10"
+        val email = "papai-cristiano@teste.com"
+        val senha = "Siuu@777"
+        val nome = "Cristiano Penaldo"
+        val idade = "39"
 
         // Tela de cadastro do App
         autenticacao.createUserWithEmailAndPassword(email, senha)
@@ -199,6 +230,8 @@ class MainActivity : AppCompatActivity() {
 
                 val email = authResult.user?.email
                 val id = authResult.user?.uid
+                // Aqui poderia ser mais dados do usuário no database
+                salvarDadosUsuario(nome, idade)
 
 //              exibirMensagem("Sucesso ao cadastrar usuário: $id - $email")
                 binding.textResultado.text = "Sucesso: $id - $email"
