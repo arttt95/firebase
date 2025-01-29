@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.arttt95.aulafirebase.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -40,10 +41,10 @@ class MainActivity : AppCompatActivity() {
 //            salvarDados()
 //            atualizarRemoverDados()
 
-//            listarDados()
+            listarDados()
 
 //            cadastroUsuario()
-            logarUsuario()
+//            logarUsuario()
 
         }
 
@@ -72,7 +73,73 @@ class MainActivity : AppCompatActivity() {
 
     private fun listarDados() {
 
-        salvarDadosUsuario("Itachi Uchiha", "34")
+//        salvarDadosUsuario("Itachi Uchiha", "34")
+
+        val idUsuarioLogado = autenticacao.currentUser?.uid
+
+        if(idUsuarioLogado != null) {
+            val referenciaUsuarioLogado = bancoDados
+                .collection("usuarios")
+//                .document(idUsuarioLogado)
+
+            /*referenciaUsuarioLogado
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    val dados = documentSnapshot.data
+
+                    if(dados != null) {
+                        val nome = dados["nome"]
+                        val idade = dados["idade"]
+                        val texto = "Nome: $nome | Idade: $idade"
+
+                        binding.textResultado.text = texto
+                    }
+
+                }.addOnFailureListener {
+
+                }*/
+
+            referenciaUsuarioLogado
+                /*.addSnapshotListener { documentSnapshot, error ->
+
+                    val dados = documentSnapshot?.data
+
+                    if (dados != null) {
+                        val nome = dados["nome"]
+                        val idade = dados["idade"]
+                        val texto = "Nome: $nome | Idade: $idade"
+
+                        binding.textResultado.text = texto
+
+                    }
+
+
+
+                }*/
+                .addSnapshotListener { querySnapshot, error ->
+
+                    val listaDocuments = querySnapshot?.documents
+
+                    var listaResultado = ""
+
+                    listaDocuments?.forEach { documentSnapshot ->
+
+                        val dados = documentSnapshot?.data
+
+                        if(dados != null) {
+
+                            val nome = dados["nome"]
+                            val idade = dados["idade"]
+                            listaResultado += "Usuário: $nome | Idade: $idade\n"
+
+                        }
+
+                    }
+
+                    binding.textResultado.text = listaResultado
+
+                }
+        }
 
     }
 
@@ -195,8 +262,13 @@ class MainActivity : AppCompatActivity() {
     private fun logarUsuario() {
 
         // Dados inseridos pelo usuário
-        val email = "que-mira-bobo@teste.com"
-        val senha = "?Argentina10"
+        // Pessi login
+//        val email = "que-mira-bobo@teste.com"
+//        val senha = "P@ss?word!"
+
+        // Menino Ney login
+        val email = "king-of-carnaval@teste.com"
+        val senha = "@resenha10?"
 
         // Simulando uma tela de login com email e senha
         autenticacao.signInWithEmailAndPassword(email, senha)
@@ -219,10 +291,11 @@ class MainActivity : AppCompatActivity() {
     private fun cadastroUsuario() {
 
         // Dados digitados pelo usuário
-        val email = "papai-cristiano@teste.com"
-        val senha = "Siuu@777"
-        val nome = "Cristiano Penaldo"
-        val idade = "39"
+        val email = "que-mira-bobo@teste.com"
+//        val senha = "@resenha10?" // Menino Ney pass
+        val senha = "P@ss?word!"
+        val nome = "Lionel Pessi"
+        val idade = "37"
 
         // Tela de cadastro do App
         autenticacao.createUserWithEmailAndPassword(email, senha)
