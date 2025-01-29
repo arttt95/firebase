@@ -41,12 +41,50 @@ class MainActivity : AppCompatActivity() {
 //            salvarDados()
 //            atualizarRemoverDados()
 
-            listarDados()
+//            listarDados()
+            pesquisarDados()
 
 //            cadastroUsuario()
 //            logarUsuario()
 
         }
+
+    }
+
+    private fun pesquisarDados() {
+
+        val referenciaUsuarios = bancoDados
+            .collection("usuarios")
+//            .whereEqualTo("nome", "Adulto Ney") // Um valor apenas
+//            .whereNotEqualTo("nome", "Adulto Ney") // Um valor
+//            .whereIn("nome", listOf("Adulto Ney", "Lionel Pessi")) // Vários valores
+//            .whereNotIn("nome", listOf("Adulto Ney", "Lionel Pessi"))
+            .whereArrayContains("conhecimentos", "php")
+
+        referenciaUsuarios
+            .addSnapshotListener { querySnapshot, error ->
+
+                val listaDocuments = querySnapshot?.documents
+
+                var listaResultado = ""
+
+                listaDocuments?.forEach { documentSnapshot ->
+
+                    val dados = documentSnapshot?.data
+
+                    if(dados != null) {
+
+                        val nome = dados["nome"]
+                        val idade = dados["idade"]
+                        listaResultado += "Usuário: $nome | Idade: $idade\n"
+
+                    }
+
+                }
+
+                binding.textResultado.text = listaResultado
+
+            }
 
     }
 
