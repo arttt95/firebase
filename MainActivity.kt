@@ -8,12 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.arttt95.aulafirebase.databinding.ActivityMainBinding
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
@@ -54,17 +50,32 @@ class MainActivity : AppCompatActivity() {
     private fun atualizarRemoverDados() {
 
         val dados = mapOf(
-            "nome" to "Menino Ney",
-            "idade" to "33",
-//            "cpf" to "524..."
+            "nome" to "Minato",
+            "idade" to "42",
+//            "cpf" to "42582332852"
         )
 
-        val referenciaPessi = bancoDados
+        /*val idUsuarioLogado = autenticacao.currentUser?.uid
+
+        if(idUsuarioLogado != null) {
+            val referenciaUsuarioLogado = bancoDados
+                .collection("usuarios")
+                .document(idUsuarioLogado)
+
+            referenciaUsuarioLogado.set(dados)
+                .addOnSuccessListener {
+                    exibirMensagem("Usuário logado foi inserido no db")
+                }.addOnFailureListener { exception ->
+                    exibirMensagem("Erro ao inserir usuário logado no db. Code: ${exception.message}")
+                }
+        }*/
+
+        val referenciaMinato = bancoDados
             .collection("usuarios")
-            .document("2")
+//            .document("1")
 
         ////////////////////
-        // RESETING DADOS //
+        // RESETING DATAS //
         ////////////////////
         /*referenciaAna.set(dados)
             .addOnSuccessListener {
@@ -74,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             }*/
 
         ////////////////////
-        // UPDATING DADOS //
+        // UPDATING DATAS //
         ////////////////////
         /*referenciaPessi.update("idade", "37")
             .addOnSuccessListener {
@@ -84,9 +95,19 @@ class MainActivity : AppCompatActivity() {
             }*/
 
         ////////////////////
-        // DELETING DADOS //
+        // DELETING DATAS //
         ////////////////////
-        referenciaPessi.delete()
+        /*referenciaPessi.delete()
+            .addOnSuccessListener {
+                exibirMensagem("Usuário removido com sucesso!")
+            }.addOnFailureListener { exception ->
+                exibirMensagem("Erro ao remover usuário. Code: ${exception.message}")
+            }*/
+
+        ////////////////////////////////
+        // ADDING DOCUMENT PATH ON DB //
+        ////////////////////////////////
+        referenciaMinato.add( dados )
             .addOnSuccessListener {
                 exibirMensagem("Usuário removido com sucesso!")
             }.addOnFailureListener { exception ->
@@ -194,4 +215,5 @@ class MainActivity : AppCompatActivity() {
     private fun exibirMensagem(texto: String) {
         Toast.makeText(this, texto, Toast.LENGTH_LONG).show()
     }
+
 }
