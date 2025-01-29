@@ -11,6 +11,7 @@ import com.arttt95.aulafirebase.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class MainActivity : AppCompatActivity() {
 
@@ -68,8 +69,10 @@ class MainActivity : AppCompatActivity() {
 //            .whereLessThan("idade", "34") // Menor que...
 //            .whereLessThanOrEqualTo("idade", "37") // Menor ou igual a...
 
-            .whereGreaterThanOrEqualTo("idade", "34")
-            .whereLessThanOrEqualTo("idade", "38")
+//            .whereGreaterThanOrEqualTo("idade", "32")
+//            .whereLessThanOrEqualTo("idade", "38")
+//            .orderBy("idade", Query.Direction.ASCENDING) // 0..10 & A..Z
+            .orderBy("idade", Query.Direction.DESCENDING) // 10..0 & Z..A
 
         referenciaUsuarios
             .addSnapshotListener { querySnapshot, error ->
@@ -339,11 +342,13 @@ class MainActivity : AppCompatActivity() {
     private fun cadastroUsuario() {
 
         // Dados digitados pelo usuário
-        val email = "que-mira-bobo@teste.com"
+        val email = "genjutsu@teste.com"
 //        val senha = "@resenha10?" // Menino Ney pass
+//        val senha = "P@ss?word!" // Lionel Pessi pass
         val senha = "P@ss?word!"
-        val nome = "Lionel Pessi"
-        val idade = "37"
+
+        val nome = "Itachi Uchiha"
+        val idade = "31"
 
         // Tela de cadastro do App
         autenticacao.createUserWithEmailAndPassword(email, senha)
