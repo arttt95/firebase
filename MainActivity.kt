@@ -55,11 +55,21 @@ class MainActivity : AppCompatActivity() {
 
         val referenciaUsuarios = bancoDados
             .collection("usuarios")
+
 //            .whereEqualTo("nome", "Adulto Ney") // Um valor apenas
 //            .whereNotEqualTo("nome", "Adulto Ney") // Um valor
 //            .whereIn("nome", listOf("Adulto Ney", "Lionel Pessi")) // Vários valores
 //            .whereNotIn("nome", listOf("Adulto Ney", "Lionel Pessi"))
-            .whereArrayContains("conhecimentos", "php")
+//            .whereArrayContains("conhecimentos", "php")
+
+        // >,  >=, <, <=
+//            .whereGreaterThan("idade", "34") // Maior do que...
+//            .whereGreaterThanOrEqualTo("idade", "37") // Maior ou igual a...
+//            .whereLessThan("idade", "34") // Menor que...
+//            .whereLessThanOrEqualTo("idade", "37") // Menor ou igual a...
+
+            .whereGreaterThanOrEqualTo("idade", "34")
+            .whereLessThanOrEqualTo("idade", "38")
 
         referenciaUsuarios
             .addSnapshotListener { querySnapshot, error ->
