@@ -41,12 +41,58 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnExecutar.setOnClickListener {
 
-            salvarDados()
+//            salvarDados()
+            atualizarRemoverDados()
 
 //            cadastroUsuario()
 //            logarUsuario()
 
         }
+
+    }
+
+    private fun atualizarRemoverDados() {
+
+        val dados = mapOf(
+            "nome" to "Menino Ney",
+            "idade" to "33",
+//            "cpf" to "524..."
+        )
+
+        val referenciaPessi = bancoDados
+            .collection("usuarios")
+            .document("2")
+
+        ////////////////////
+        // RESETING DADOS //
+        ////////////////////
+        /*referenciaAna.set(dados)
+            .addOnSuccessListener {
+                exibirMensagem("Usuário alterado com sucesso")
+            }.addOnFailureListener { exception ->
+                exibirMensagem("Erro ao atualizar usuário. Code: ${exception.message}")
+            }*/
+
+        ////////////////////
+        // UPDATING DADOS //
+        ////////////////////
+        /*referenciaPessi.update("idade", "37")
+            .addOnSuccessListener {
+                exibirMensagem("Usuário alterado com sucesso")
+            }.addOnFailureListener { exception ->
+                exibirMensagem("Erro ao atualizar usuário. Code: ${exception.message}")
+            }*/
+
+        ////////////////////
+        // DELETING DADOS //
+        ////////////////////
+        referenciaPessi.delete()
+            .addOnSuccessListener {
+                exibirMensagem("Usuário removido com sucesso!")
+            }.addOnFailureListener { exception ->
+                exibirMensagem("Erro ao remover usuário. Code: ${exception.message}")
+            }
+
 
     }
 
