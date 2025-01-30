@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 //            atualizarRemoverDados()
 
 //            listarDados()
-            pesquisarDados()
+//            pesquisarDados()
 
 //            cadastroUsuario()
 //            logarUsuario()
@@ -288,6 +288,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+        logarUsuario()
 //        verificarUsuarioLogado()
 
     }
@@ -330,7 +331,7 @@ class MainActivity : AppCompatActivity() {
                 binding.textResultado.text = "Sucesso ao logar usuário com id: $id"
 
                 startActivity(
-                    Intent(this, PrincipalActivity::class.java)
+                    Intent(this, ImageUploadActivity::class.java)
                 )
 
             }.addOnFailureListener { exception ->
