@@ -19,6 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import java.io.ByteArrayOutputStream
+import java.io.OutputStream
 import java.util.UUID
 import kotlin.uuid.Uuid
 
@@ -105,7 +107,8 @@ class ImageUploadActivity : AppCompatActivity() {
 
         binding.btnUpload.setOnClickListener {
 
-            uploadGaleria()
+//            uploadGaleria()
+            uploadCamera()
 
         }
 
@@ -157,6 +160,61 @@ class ImageUploadActivity : AppCompatActivity() {
                 .child(idUsuarioLogado)
                 .child("foto.jpg")
                 .putFile( uriImagemSelecionada!! )
+                .addOnSuccessListener { task ->
+
+                    Toast.makeText(
+                        this,"Sucesso ao realizar upload da img.",
+                        Toast.LENGTH_SHORT).show()
+                    task.metadata?.reference?.downloadUrl
+                        ?.addOnSuccessListener { urlFirebase ->
+                            Toast.makeText(
+                                this,
+                                urlFirebase.toString(),
+                                Toast.LENGTH_SHORT).show()
+
+                            salvarUrlImagem(urlFirebase)
+
+                        }
+
+                }.addOnFailureListener { exception ->
+
+                    Toast.makeText(
+                        this,
+                        "Erro ao realizar upload da img. Code: ${exception.message}",
+                        Toast.LENGTH_SHORT).show()
+
+                }
+
+        }
+
+    }
+
+    private fun uploadCamera() {
+
+        /*
+        -> videos
+        -> fotos
+            -> < id_usuario_logado >
+                -> foto1.jpg
+        */
+
+//        val nomeImagem = UUID.randomUUID().toString()
+
+        val outPutStream = ByteArrayOutputStream()
+
+        bitmapImagemSelecionada?.compress( // Convertendo bitmap para ByteArray -> OutPutStream
+            Bitmap.CompressFormat.JPEG,
+            80,
+            outPutStream
+        )
+
+        if(bitmapImagemSelecionada != null && idUsuarioLogado != null) {
+
+            armazenamento
+                .getReference("fotos")
+                .child(idUsuarioLogado)
+                .child("foto.jpg")
+                .putBytes( outPutStream.toByteArray() )
                 .addOnSuccessListener { task ->
 
                     Toast.makeText(
